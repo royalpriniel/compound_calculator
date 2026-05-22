@@ -65,7 +65,7 @@ const CompoundCalculator = () => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '500px', margin: 'auto', fontFamily: 'sans-serif', border: '1px solid #ddd', borderRadius: '12px' }}>
-      <h2>Compound Interest Calculator</h2>
+      <h2 style={{textAlign: "center"}}>Compound Interest Calculator</h2>
       
       <form onSubmit={calculate}>
         <div style={{ marginBottom: '10px' }}>
