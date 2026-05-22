@@ -70,22 +70,22 @@ const CompoundCalculator = () => {
       <form onSubmit={calculate}>
         <div style={{ marginBottom: '10px' }}>
           <label>Full Name:</label>
-          <input type="text" style={{ width: '100%' }} value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
+          <input type="text" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
         </div>
 
         <div style={{ marginBottom: '10px' }}>
           <label>Principal Amount ($):</label>
-          <input type="text" style={{ width: '100%' }} value={formData.principal} onChange={(e) => setFormData({...formData, principal: e.target.value})} required />
+          <input type="text" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.principal} onChange={(e) => setFormData({...formData, principal: e.target.value})} required />
         </div>
 
         <div style={{ marginBottom: '10px' }}>
           <label>Annual Interest Rate (%):</label>
-          <input type="number" step="0.01" style={{ width: '100%' }} value={formData.rate} onChange={(e) => setFormData({...formData, rate: e.target.value})} required />
+          <input type="number" step="0.01" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.rate} onChange={(e) => setFormData({...formData, rate: e.target.value})} required />
         </div>
 
         <div style={{ marginBottom: '10px' }}>
           <label>Duration (e.g., "12 months" or "5 years"):</label>
-          <input type="text" style={{ width: '100%' }} value={formData.timeStr} onChange={(e) => setFormData({...formData, timeStr: e.target.value})} required />
+          <input type="text" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.timeStr} onChange={(e) => setFormData({...formData, timeStr: e.target.value})} required />
         </div>
 
         <button type="submit" style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', cursor: 'pointer' }}>Calculate</button>
