@@ -23,10 +23,11 @@ const CompoundCalculator = () => {
     const value = parseFloat(input.replace(/[^0-9.]/g, ''));
     const lowerInput = input.toLowerCase();
     
-    let unit = 'year'; // default
-    if (lowerInput.includes('day')) unit = 'day';
-    else if (lowerInput.includes('week')) unit = 'week';
-    else if (lowerInput.includes('month')) unit = 'month';
+    let unit;
+    if (lowerInput.includes('day')|| lowerInput.includes('de')||lowerInput.includes('dey')||lowerInput.includes('dei')||lowerInput.includes('dai')) unit = 'day';
+    else if (lowerInput.includes('week')||lowerInput.includes('weak')||lowerInput.includes('wek')||lowerInput.includes('wik')||lowerInput.includes('wick')||lowerInput.includes('weck')||lowerInput.includes('wiik')) unit = 'week';
+    else if (lowerInput.includes('month')||lowerInput.includes('mot')||lowerInput.includes('moth')||lowerInput.includes("mont")) unit = 'month';
+    else if (lowerInput.includes('year')||lowerInput.includes('yeah')||lowerInput.includes("yer")||lowerInput.includes('yie')||lowerImput.includes('yii')||lowerInput.includes("yia")) unit ="year";
     
     return { value, unit };
   };
@@ -65,27 +66,27 @@ const CompoundCalculator = () => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '500px', margin: 'auto', fontFamily: 'sans-serif', border: '1px solid #ddd', borderRadius: '12px' }}>
-      <h2>Compound Interest Calculator</h2>
+      <h2 style={{textAlign: "center"}}>Compound Interest Calculator</h2>
       
       <form onSubmit={calculate}>
         <div style={{ marginBottom: '10px' }}>
           <label>Full Name:</label>
-          <input type="text" style={{ width: '100%' }} value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
+          <input type="text" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
         </div>
 
         <div style={{ marginBottom: '10px' }}>
           <label>Principal Amount ($):</label>
-          <input type="text" style={{ width: '100%' }} value={formData.principal} onChange={(e) => setFormData({...formData, principal: e.target.value})} required />
+          <input type="text" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.principal} onChange={(e) => setFormData({...formData, principal: e.target.value})} required />
         </div>
 
         <div style={{ marginBottom: '10px' }}>
           <label>Annual Interest Rate (%):</label>
-          <input type="number" step="0.01" style={{ width: '100%' }} value={formData.rate} onChange={(e) => setFormData({...formData, rate: e.target.value})} required />
+          <input type="number" step="0.01" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.rate} onChange={(e) => setFormData({...formData, rate: e.target.value})} required />
         </div>
 
         <div style={{ marginBottom: '10px' }}>
           <label>Duration (e.g., "12 months" or "5 years"):</label>
-          <input type="text" style={{ width: '100%' }} value={formData.timeStr} onChange={(e) => setFormData({...formData, timeStr: e.target.value})} required />
+          <input type="text" style={{ width: '100%', height: '30px', fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.timeStr} onChange={(e) => setFormData({...formData, timeStr: e.target.value})} required />
         </div>
 
         <button type="submit" style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', cursor: 'pointer' }}>Calculate</button>
