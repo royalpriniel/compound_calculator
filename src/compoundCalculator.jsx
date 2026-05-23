@@ -86,7 +86,11 @@ const CompoundCalculator = () => {
 
         <div style={{ marginBottom: '10px' }}>
           <label>Duration (e.g., "12 months" or "5 years"):</label>
+<<<<<<< HEAD
           <input type="text" style={{ width: '100%', height: '30px', fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.timeStr} onChange={(e) => setFormData({...formData, timeStr: e.target.value})} required />
+=======
+          <input type="text" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.timeStr} onChange={(e) => setFormData({...formData, timeStr: e.target.value})} required />
+>>>>>>> 7d7fb17b56d83f93a7dc10ca6ab9fdf808e8de85
         </div>
 
         <button type="submit" style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', cursor: 'pointer' }}>Calculate</button>
