@@ -18,16 +18,21 @@ const CompoundCalculator = () => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
 
-  // 3. Logic: Extract Time Unit and Value
+   // 3. Logic: Extract Time Unit and Value
   const parseTime = (input) => {
     const value = parseFloat(input.replace(/[^0-9.]/g, ''));
     const lowerInput = input.toLowerCase();
-    
-    let unit = 'year'; // default
-    if (lowerInput.includes('day')) unit = 'day';
-    else if (lowerInput.includes('week')) unit = 'week';
-    else if (lowerInput.includes('month')) unit = 'month';
-    
+
+    let unit;
+    if (lowerInput.includes('day')|| lowerInput.includes('de')||lowerInput.includes('dey')||
+lowerInput.includes('dei')||lowerInput.includes('dai')) unit = 'day';
+    else if (lowerInput.includes('week')||lowerInput.includes('weak')||lowerInput.includes('wek')||
+lowerInput.includes('wik')||lowerInput.includes('wick')||lowerInput.includes('weck')||lowerInput.includes('wiik')) unit = 'week';
+    else if (lowerInput.includes('month')||lowerInput.includes('mot')||lowerInput.includes('moth')||
+lowerInput.includes("mont")) unit = 'month';
+    else if (lowerInput.includes('year')||lowerInput.includes('yeah')||lowerInput.includes("yer")||
+lowerInput.includes('yie')||lowerImput.includes('yii')||lowerInput.includes("yia")) unit ="year";
+
     return { value, unit };
   };
 
