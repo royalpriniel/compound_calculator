@@ -106,7 +106,7 @@ const CompoundCalculator = () => {
         <div style={{ marginBottom: '10px' }}>
           <label>Compounding Frequency:</label>
           <select
-            style={{ width: '100%', height: "35px", fontSize: "1rem", padding: "0.5rem", boxSizing: "border-box" }}
+            style={{ width: '100%', height: "35px", fontSize: "1rem", padding: "0.5rem", boxSizing: "border-box", display: "flex", alignItems:"center"}}
             value={formData.compoundingFreq}
             onChange={(e) => setFormData({ ...formData, compoundingFreq: e.target.value })}
           >
