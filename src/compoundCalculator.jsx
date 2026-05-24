@@ -1,5 +1,26 @@
 import React, { useState } from 'react';
 
+// ✅ Reusable Input Component
+const InputField = ({ label, type = "text", value, onChange, placeholder }) => (
+  <div style={{ marginBottom: '10px' }}>
+    <label>{label}</label>
+    <input
+      type={type}
+      placeholder={placeholder}
+      style={{
+        width: '100%',
+        height: "30px",
+        fontSize: "1rem",
+        padding: "0.5rem",
+        boxSizing: "border-box"
+      }}
+      value={value}
+      onChange={onChange}
+      required
+    />
+  </div>
+);
+
 const CompoundCalculator = () => {
   // 1. State Management
   const [formData, setFormData] = useState({
@@ -12,30 +33,33 @@ const CompoundCalculator = () => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
 
-  // 2. Logic: Capitalize Name (LLM/Helper logic)
-  const formatName = (str) => {
-    if (!str) return '';
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  };
+  // 2. Logic: Capitalize Name
+  const formatName = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : '';
 
-   // 3. Logic: Extract Time Unit and Value
+  // 3. Logic: Extract Time Unit and Value
   const parseTime = (input) => {
     const value = parseFloat(input.replace(/[^0-9.]/g, ''));
     const lowerInput = input.toLowerCase();
 
+    const unitMap = {
+      day: ['day', 'de', 'dey', 'dei', 'dai'],
+      week: ['week', 'weak', 'wek', 'wik', 'wick', 'weck', 'wiik'],
+      month: ['month', 'mot', 'moth', 'mont'],
+      year: ['year', 'yeah', 'yer', 'yie', 'yii', 'yia']
+    };
+
     let unit;
-    if (lowerInput.includes('day')|| lowerInput.includes('de')||lowerInput.includes('dey')||
-lowerInput.includes('dei')||lowerInput.includes('dai')) unit = 'day';
-    else if (lowerInput.includes('week')||lowerInput.includes('weak')||lowerInput.includes('wek')||
-lowerInput.includes('wik')||lowerInput.includes('wick')||lowerInput.includes('weck')||lowerInput.includes('wiik')) unit = 'week';
-    else if (lowerInput.includes('month')||lowerInput.includes('mot')||lowerInput.includes('moth')||
-lowerInput.includes("mont")) unit = 'month';
-    else if (lowerInput.includes('year')||lowerInput.includes('yeah')||lowerInput.includes("yer")||
-lowerInput.includes('yie')||lowerImput.includes('yii')||lowerInput.includes("yia")) unit ="year";
+    for (const [key, synonyms] of Object.entries(unitMap)) {
+      if (synonyms.some(s => lowerInput.includes(s))) {
+        unit = key;
+        break;
+      }
+    }
 
     return { value, unit };
   };
 
+  // 4. Calculation Logic
   const calculate = (e) => {
     e.preventDefault();
     setError('');
@@ -43,22 +67,23 @@ lowerInput.includes('yie')||lowerImput.includes('yii')||lowerInput.includes("yia
     const formattedName = formatName(formData.name);
     const { value: timeValue, unit: timeUnit } = parseTime(formData.timeStr);
     const principal = parseFloat(formData.principal);
-    let annualRate = parseFloat(formData.rate) / 100; // Convert percentage to decimal
+    const annualRate = parseFloat(formData.rate) / 100;
 
-    // 4. Error Handling
-    if (isNaN(principal) || isNaN(annualRate) || isNaN(timeValue)) {
-      setError("Please ensure the amount, rate, and time are valid numbers.");
+    if (isNaN(principal) || isNaN(annualRate) || isNaN(timeValue) || !timeUnit) {
+      setError("Please ensure the amount, rate, and time are valid numbers with a proper unit (day, week, month, year).");
       return;
     }
 
-    // 5. Rate Adjustment based on Time Unit
-    let adjustedRate = annualRate;
-    if (timeUnit === "day") adjustedRate = annualRate / 365;
-    else if (timeUnit === "week") adjustedRate = annualRate / 52;
-    else if (timeUnit === "month") adjustedRate = annualRate / 12;
+    // Rate adjustment based on unit
+    const rateAdjustments = { day: 365, week: 52, month: 12, year: 1 };
+    const adjustedRate = annualRate / (rateAdjustments[timeUnit] || 1);
 
-    // 6. Compound Interest Formula: A = P(1 + r)^t
-    const amount = principal * Math.pow(1 + adjustedRate, timeValue);
+    // Compounding frequency
+    const freqMap = { yearly: 1, quarterly: 4, monthly: 12, daily: 365 };
+    const n = freqMap[formData.compoundingFreq] || 1;
+
+    // Compound Interest Formula: A = P(1 + r/n)^(n*t)
+    const amount = principal * Math.pow(1 + adjustedRate / n, n * timeValue);
 
     setResult({
       name: formattedName,
@@ -70,27 +95,26 @@ lowerInput.includes('yie')||lowerImput.includes('yii')||lowerInput.includes("yia
 
   return (
     <div style={{ padding: '20px', maxWidth: '500px', margin: 'auto', fontFamily: 'sans-serif', border: '1px solid #ddd', borderRadius: '12px' }}>
-      <h2 style={{textAlign: "center"}}>Compound Interest Calculator</h2>
-      
+      <h2 style={{ textAlign: "center" }}>Compound Interest Calculator</h2>
+
       <form onSubmit={calculate}>
-        <div style={{ marginBottom: '10px' }}>
-          <label>Full Name:</label>
-          <input type="text" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
-        </div>
+        <InputField label="Full Name:" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Enter your name" />
+        <InputField label="Principal Amount ($):" value={formData.principal} onChange={(e) => setFormData({ ...formData, principal: e.target.value })} placeholder="e.g. 1000" />
+        <InputField label="Annual Interest Rate (%):" type="number" value={formData.rate} onChange={(e) => setFormData({ ...formData, rate: e.target.value })} placeholder="e.g. 5" />
+        <InputField label="Duration (e.g., '12 months' or '5 years'):" value={formData.timeStr} onChange={(e) => setFormData({ ...formData, timeStr: e.target.value })} placeholder="e.g. 10 years" />
 
         <div style={{ marginBottom: '10px' }}>
-          <label>Principal Amount ($):</label>
-          <input type="text" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.principal} onChange={(e) => setFormData({...formData, principal: e.target.value})} required />
-        </div>
-
-        <div style={{ marginBottom: '10px' }}>
-          <label>Annual Interest Rate (%):</label>
-          <input type="number" step="0.01" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.rate} onChange={(e) => setFormData({...formData, rate: e.target.value})} required />
-        </div>
-
-        <div style={{ marginBottom: '10px' }}>
-          <label>Duration (e.g., "12 months" or "5 years"):</label>
-          <input type="text" style={{ width: '100%', height: "30px", fontSize: "1rem", padding:"0.5rem", boxSizing:"border-box" }} value={formData.timeStr} onChange={(e) => setFormData({...formData, timeStr: e.target.value})} required />
+          <label>Compounding Frequency:</label>
+          <select
+            style={{ width: '100%', height: "35px", fontSize: "1rem", padding: "0.5rem", boxSizing: "border-box" }}
+            value={formData.compoundingFreq}
+            onChange={(e) => setFormData({ ...formData, compoundingFreq: e.target.value })}
+          >
+            <option value="yearly">Yearly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="monthly">Monthly</option>
+            <option value="daily">Daily</option>
+          </select>
         </div>
 
         <button type="submit" style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', cursor: 'pointer' }}>Calculate</button>
