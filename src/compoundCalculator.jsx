@@ -66,10 +66,12 @@ const CompoundCalculator = () => {
 
     const formattedName = formatName(formData.name);
     const { value: timeValue, unit: timeUnit } = parseTime(formData.timeStr);
-    const principal = parseFloat(formData.principal);
-    const annualRate = parseFloat(formData.rate) / 100;
+    const sanitizedPrincipalInput = formData.principal.replace(/[^0-9.]/g, '');
+    const principal = parseFloat(sanitizedPrincipalInput);
+    const sanitizedRateInput = formData.rate.replace(/[^0-9.]/g, '');
+    const annualRate = parseFloat(sanitizedRateInput) / 100;
 
-    if (isNaN(principal) || isNaN(annualRate) || isNaN(timeValue) || !timeUnit) {
+    if (isNaN(principal) || isNaN(annualRate) || isNaN(timeValue) || !timeUnit) { 
       setError("Please ensure the amount, rate, and time are valid numbers with a proper unit (day, week, month, year).");
       return;
     }
