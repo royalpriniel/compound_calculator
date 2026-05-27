@@ -34,7 +34,7 @@ const CompoundCalculator = () => {
   const [error, setError] = useState('');
 
   // 2. Logic: Capitalize Name
-  const formatName = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : '';
+  const formatName = (str) => str ? str.replace(/\b\w/g, char => char.toUpperCase()) : '';
 
   // 3. Logic: Extract Time Unit and Value
   const parseTime = (input) => {
