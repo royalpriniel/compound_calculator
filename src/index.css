@@ -15,6 +15,7 @@
 *{
   margin:0;
   padding:0;
+ box-sizing: border-box;
 }
 a {
   font-weight: 500;
@@ -28,15 +29,17 @@ body{
   min-width: 100vw;
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
 }
 #root{
 
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-items: center;
-  border-sizing: border-box;
+  justify-content: center;
+  box-sizing: border-box;
   border: dashed blue 0.2rem;
   border-radius:0;
   width: 93%;
