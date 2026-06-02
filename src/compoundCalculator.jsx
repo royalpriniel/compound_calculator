@@ -125,7 +125,7 @@ const CompoundCalculator = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {result && (
-        <div style={{ marginTop: '20px', padding: '15px', background: '#f4f4f4', borderRadius: '8px' }}>
+        <div className="result">
           <h3>Welcome {result.name},</h3>
           <p>Based on your input, you will get <strong>${result.total}</strong> in {result.time} {result.unit}(s).</p>
         </div>
