@@ -134,4 +134,3 @@ const CompoundCalculator = () => {
 };
 
 export default CompoundCalculator;
-
